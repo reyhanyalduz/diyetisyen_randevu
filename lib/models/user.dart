@@ -23,9 +23,14 @@ class Client extends User {
     required this.weight,
   }) : super(name: name, email: email, userType: UserType.client);
 
+  double get bmi {
+    double heightInMeters = height / 100;
+    return weight / (heightInMeters * heightInMeters);
+  }
+
   @override
   String toString() {
-    return 'Client{name: $name, email: $email, height: $height, weight: $weight}';
+    return 'Client{name: $name, email: $email, height: $height, weight: $weight, bmi: ${bmi.toStringAsFixed(2)}}';
   }
 }
 

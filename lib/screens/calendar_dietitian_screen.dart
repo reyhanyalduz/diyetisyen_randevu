@@ -9,14 +9,14 @@ class AppointmentPage extends StatefulWidget {
 class _AppointmentPageState extends State<AppointmentPage> {
   DateTime selectedDate = DateTime.now(); // Varsayılan olarak bugünü seç
   List<Map<String, dynamic>> appointments = [
-    {"date": DateTime(2024, 2, 18), "time": "10:00", "name": "User1"},
-    {"date": DateTime(2024, 2, 18), "time": "10:20", "name": "User2"},
-    {"date": DateTime(2024, 2, 18), "time": "10:40", "name": "User3"},
-    {"date": DateTime(2024, 2, 20), "time": "11:20", "name": "User4"},
+    {"date": DateTime(2024, 2, 24), "time": "10:00", "name": "User1"},
+    {"date": DateTime(2024, 2, 25), "time": "10:20", "name": "User2"},
+    {"date": DateTime(2024, 2, 25), "time": "10:40", "name": "User3"},
+    {"date": DateTime(2024, 2, 25), "time": "11:20", "name": "User4"},
     {"date": DateTime(2024, 2, 18), "time": "11:40", "name": "User5"},
-    {"date": DateTime(2024, 2, 18), "time": "14:20", "name": "User6"},
+    {"date": DateTime(2024, 2, 25), "time": "14:20", "name": "User6"},
     {"date": DateTime(2024, 2, 20), "time": "14:40", "name": "User7"},
-    {"date": DateTime(2024, 2, 18), "time": "17:00", "name": "User8"},
+    {"date": DateTime(2024, 2, 25), "time": "17:00", "name": "User8"},
   ];
 
   @override

@@ -1,15 +1,12 @@
+import 'package:diyetisyen_randevu/screens/calendar_dietitian_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'models/user.dart';
 import 'screens/calendar_client_screen.dart';
 import 'screens/profile.dart';
 
-final User currentUser = Client(
-  name: 'UserAdi',
-  email: 'user@example.com',
-  height: 100,
-  weight: 10.0,
-);
+final User currentUser = Dietitian(
+    name: 'UserAdi', email: 'user@example.com', specialty: '..');
 final User currentUser2 = Client(
   name: 'UserAdi',
   email: 'user@example.com',
@@ -57,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _pages.add(ProfileScreen(user: widget.user));
-    _pages.add(CalendarScreen());
+    _pages.add(AppointmentPage());
   }
 
   void _onItemTapped(int index) {
