@@ -205,7 +205,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ],
         ),
       )
-          : AppointmentPage(),
+          : DietitianAppointmentPage(),
     );
   }
 }

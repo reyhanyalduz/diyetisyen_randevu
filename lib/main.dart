@@ -7,12 +7,10 @@ import 'screens/profile.dart';
 import 'screens/profile_client_screen.dart';
 import '../utils/constants.dart';
 
-final User currentUser = Client(
-  name: 'UserAdi UserSoyadi',
-  email: 'user@example.com',
-  height: 160,
-  weight: 50.0,
-);
+final User currentUser = Dietitian(
+    name: 'UserAdi UserSoyadi',
+    email: 'user@example.com',
+    specialty: 'uzmanlık alanı');
 final User currentUser2 = Client(
   name: 'UserAdi UserSoyadi',
   email: 'user@example.com',
@@ -64,8 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _pages.add(ClientProfileScreen(
-        user: widget.user, currentUser: currentUser));
+    _pages.add(ProfileScreen(
+        user: widget.user,));
     _pages.add(CalendarScreen());
   }
 
