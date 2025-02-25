@@ -43,10 +43,10 @@ class ClientProfileScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildInfoCardx('Vücut Kitle İndeksi',
+                    _buildInfoCard('Vücut Kitle İndeksi',
                         '${(user as Client).bmi.toStringAsFixed(2)}'),
-                    _buildInfoCardx('Kilo', '${(user as Client).weight} kg'),
-                    _buildInfoCardx('Boy', '${(user as Client).height} cm'),
+                    _buildInfoCard('Kilo', '${(user as Client).weight} kg'),
+                    _buildInfoCard('Boy', '${(user as Client).height} cm'),
                   ],
                 ),
 
@@ -64,27 +64,8 @@ class ClientProfileScreen extends StatelessWidget {
         ));
   }
 
-  Widget _buildInfoCard(String title, String value) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: AppColors.color1,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        children: [
-          Text(title, style: TextStyle(color: Colors.white, fontSize: 16)),
-          Text(value,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold)),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildInfoCardx(String title, String value) {
+  Widget _buildInfoCard(String title, String value) {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -194,7 +175,7 @@ class ClientProfileScreen extends StatelessWidget {
         Column(
           children: meals
               .map((meal) => Card(
-            color: AppColors.color3,
+            color: AppColors.color4,
             child: Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(meal, style: TextStyle(fontSize: 18)),

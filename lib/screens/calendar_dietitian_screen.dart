@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../utils/constants.dart';
 
 class AppointmentPage extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Randevu Takvimi"), backgroundColor: Colors.white),
+      appBar: AppBar(title: Text("Randevu Takvimi"), ),
       body: Column(
         children: [
           _buildDateSelector(), // Tarih seçim butonları
@@ -52,7 +53,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               margin: EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
-                color: selectedDate.day == date.day ? Colors.purple : Colors.white,
+                color: selectedDate.day == date.day ? AppColors.color3 : Colors.white,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -107,7 +108,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                 margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.purple[100],
+                  color: AppColors.color3,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text("${appointment['time']} - ${appointment['name']}",
