@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "758419619836",
+    "project_id": "diyetisyen-app-147258369",
+    "storage_bucket": "diyetisyen-app-147258369.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758419619836:android:d5e98141c7861e6d27bc79",
+        "android_client_info": {
+          "package_name": "com.example.diyetisyen_randevu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEENgyNR5jggziU9fzBrKcNjh0Ybs0tw8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758419619836:android:fa47089404f25e7a27bc79",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_13"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEENgyNR5jggziU9fzBrKcNjh0Ybs0tw8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

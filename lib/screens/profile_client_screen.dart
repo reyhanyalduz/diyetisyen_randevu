@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../models/user.dart';
-import '../utils/constants.dart';
 import '../widgets/diet_list_widget.dart';
 import '../widgets/info_card_widget.dart';
 import '../widgets/tag_section_widget.dart';
@@ -51,8 +50,6 @@ class ClientProfileScreen extends StatelessWidget {
                     InfoCard('Boy', '${(user as Client).height} cm'),
                   ],
                 ),
-
-
                 SizedBox(height: 20),
                 TagSection(context, 'Alerjiler', ['Gluten', 'Laktoz']),
                 TagSection(context, 'Hastalıklar', ['Diyabet']),

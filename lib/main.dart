@@ -1,4 +1,3 @@
-import 'package:diyetisyen_randevu/screens/calendar_dietitian_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'models/user.dart';
@@ -6,11 +5,14 @@ import 'screens/calendar_client_screen.dart';
 import 'screens/profile.dart';
 import 'screens/profile_client_screen.dart';
 import '../utils/constants.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-final User currentUser = Dietitian(
-    name: 'UserAdi UserSoyadi',
-    email: 'user@example.com',
-    specialty: 'uzmanlık alanı');
+final User currentUser = Client(
+  name: 'UserAdi UserSoyadi',
+  email: 'user@example.com',
+  height: 160,
+  weight: 50.0,);
 final User currentUser2 = Client(
   name: 'UserAdi UserSoyadi',
   email: 'user@example.com',
@@ -24,7 +26,9 @@ final User currentUser3 = Dietitian(
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeDateFormatting('tr', null); // Türkçe formatı yükle
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform); // Firebase'i başlat
+  await initializeDateFormatting('tr', null); // Türkçe tarih formatını yükle
   runApp(MyApp());
 }
 
@@ -62,8 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _pages.add(ProfileScreen(
-        user: widget.user,));
+    _pages.add(ClientProfileScreen(
+        user: widget.user, currentUser: currentUser,));
     _pages.add(CalendarScreen());
   }
 
