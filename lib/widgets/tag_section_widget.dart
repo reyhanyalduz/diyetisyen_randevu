@@ -1,79 +1,100 @@
 import 'package:flutter/material.dart';
-import '../utils/constants.dart';
 
-Widget TagSection(BuildContext context, String title,
-    List<String> tags) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: EdgeInsets.only(left: 6),
-        child: Text(title,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-      ),
-      Wrap(
-        spacing: 8, // Chip'ler arasındaki yatay boşluğu belirler
-        runSpacing: 8, // Satırlar arasındaki boşluğu belirler
-        children: [
-          ...tags.map(
-                (tag) =>
-                Chip(
-                  label: Text(tag),
-                  deleteIcon: Icon(Icons.close, size: 16),
-                  onDeleted: () {
-                    // Silme işlemi burada yapılacak
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    // Kenarları yumuşat
-                    side: BorderSide(
-                        color: AppColors.color1), // Kenar çizgisi ekle
-                  ),
-                ),
+class TagSection extends StatefulWidget {
+  final BuildContext context;
+  final String title;
+  final List<String> initialTags;
+  final Function(List<String>) onTagsUpdated;
+
+  const TagSection({
+    required this.context,
+    required this.title,
+    required this.initialTags,
+    required this.onTagsUpdated,
+  });
+
+  @override
+  _TagSectionState createState() => _TagSectionState();
+}
+
+class _TagSectionState extends State<TagSection> {
+  List<String> _tags = [];
+  final TextEditingController _tagController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _tags = List.from(widget.initialTags);
+  }
+
+  void _addTag() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('${widget.title} Ekle'),
+        content: TextField(
+          controller: _tagController,
+          decoration: InputDecoration(
+            hintText: 'Yeni ${widget.title.toLowerCase()} girin',
           ),
-          GestureDetector(
-            onTap: () {
-              // Yeni alerji ekleme işlemi burada yapılacak
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    backgroundColor: Colors.white,
-                    title: Text(
-                      'Yeni Alerji Ekle',
-                    ),
-                    content: TextField(
-                      decoration: InputDecoration(hintText: "Alerji Adı"),
-                    ),
-                    actions: [
-                      TextButton(
-                        child: Text('Ekle'),
-                        onPressed: () {
-                          // Alerjiyi ekleme işlemi burada yapılacak
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      TextButton(
-                        child: Text('İptal'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('İptal'),
+          ),
+          TextButton(
+            onPressed: () {
+              if (_tagController.text.isNotEmpty) {
+                setState(() {
+                  _tags.add(_tagController.text);
+                  widget.onTagsUpdated(_tags);
+                });
+                _tagController.clear();
+                Navigator.pop(context);
+              }
             },
-            child: Chip(
-              label: Icon(Icons.add, size: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: BorderSide(color: AppColors.color1),
-              ),
-            ),
+            child: Text('Ekle'),
           ),
         ],
       ),
-    ],
-  );
+    );
+  }
+
+  void _removeTag(int index) {
+    setState(() {
+      _tags.removeAt(index);
+      widget.onTagsUpdated(_tags);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(widget.title,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            IconButton(
+              icon: Icon(Icons.add),
+              onPressed: _addTag,
+            ),
+          ],
+        ),
+        Wrap(
+          spacing: 8.0,
+          runSpacing: 4.0,
+          children: _tags.asMap().entries.map((entry) {
+            return Chip(
+              label: Text(entry.value),
+              onDeleted: () => _removeTag(entry.key),
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
 }

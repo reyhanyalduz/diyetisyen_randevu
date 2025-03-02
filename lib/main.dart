@@ -7,22 +7,10 @@ import 'screens/profile_client_screen.dart';
 import '../utils/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
-final User currentUser = Client(
-  name: 'UserAdi UserSoyadi',
-  email: 'user@example.com',
-  height: 160,
-  weight: 50.0,);
-final User currentUser2 = Client(
-  name: 'UserAdi UserSoyadi',
-  email: 'user@example.com',
-  height: 160,
-  weight: 50.0,
-);
-final User currentUser3 = Dietitian(
-    name: 'UserAdi UserSoyadi',
-    email: 'user@example.com',
-    specialty: 'uzmanlık alanı');
+import 'screens/login_screen.dart';
+import 'screens/signup_screen.dart';
+import 'screens/splash_screen.dart';
+import 'services/auth_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,51 +24,89 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Diyetisyen Uygulaması',
-      theme: ThemeData(
-        colorScheme: ColorScheme.light(
-          primary: AppColors.color1,
-          secondary: AppColors.color3,
-          surface: AppColors.color4,
-        ),
-        scaffoldBackgroundColor: Color.fromRGBO(255, 255, 255, 1),
+        debugShowCheckedModeBanner: false,
+        title: 'Diyetisyen Uygulaması',
+        theme: ThemeData(
+          colorScheme: ColorScheme.light(
+            primary: AppColors.color1,
+            secondary: AppColors.color3,
+            surface: AppColors.color4,
+          ),
+          scaffoldBackgroundColor: Color.fromRGBO(255, 255, 255, 1),
           cardColor: AppColors.color4,
-      ),
-      home: HomeScreen(user: currentUser),
-    );
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => SplashPage(),
+          '/login': (context) => LoginPage(),
+          '/signup': (context) => SignUpPage(),
+          '/clientHome': (context) => HomeScreen(userType: UserType.client),
+          '/dietitianHome': (context) =>
+              HomeScreen(userType: UserType.dietitian),
+        });
   }
 }
 
 class HomeScreen extends StatefulWidget {
-  final User user;
-  HomeScreen({required this.user});
+  final UserType userType;
+  HomeScreen({required this.userType});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0; // Seçili sayfa indeksini tutar
-  final List<Widget> _pages = [];
+  int _selectedIndex = 0;
+  AppUser? _currentUser;
+  List<Widget>? _pages;
 
   @override
   void initState() {
     super.initState();
-    _pages.add(ClientProfileScreen(
-        user: widget.user, currentUser: currentUser,));
-    _pages.add(CalendarScreen());
+    _initializePages();
+  }
+
+  Future<void> _initializePages() async {
+    final user = await AuthService().getCurrentUser();
+    if (user == null) {
+      Navigator.pushReplacementNamed(context, '/login');
+      return;
+    }
+
+    setState(() {
+      _currentUser = user;
+      if (widget.userType == UserType.client) {
+        _pages = [
+          ClientProfileScreen(user: user),
+          CalendarScreen(currentUser: user),
+        ];
+      } else {
+        _pages = [
+          ProfileScreen(user: user),
+          CalendarScreen(currentUser: user),
+        ];
+      }
+    });
   }
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; // Seçili sayfayı güncelle
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_pages == null || _currentUser == null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
-      body: _pages[_selectedIndex], // Seçili sayfayı göster
+      body: _pages![_selectedIndex], // Seçili sayfayı göster
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

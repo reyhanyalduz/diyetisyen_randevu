@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/user.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final User user;
+  final AppUser user;
 
   ProfileScreen({required this.user});
 

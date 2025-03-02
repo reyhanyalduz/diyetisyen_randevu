@@ -7,6 +7,9 @@ import '../services/appointment_service.dart';
 import '../utils/constants.dart';
 
 class CalendarScreen extends StatefulWidget {
+  final AppUser currentUser;
+
+  CalendarScreen({required this.currentUser});
   @override
   _CalendarScreenState createState() => _CalendarScreenState();
 }
@@ -82,7 +85,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Takvim')),
-      body: (currentUser.userType == UserType.client)
+      body: (widget.currentUser.userType == UserType.client)
           ? SingleChildScrollView(
         child: Column(
           children: [
