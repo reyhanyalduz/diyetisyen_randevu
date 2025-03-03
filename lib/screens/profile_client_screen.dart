@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/user.dart';
+import '../services/auth_service.dart';
 import '../widgets/diet_list_widget.dart';
 import '../widgets/info_card_widget.dart';
 import '../widgets/tag_section_widget.dart';
@@ -159,7 +160,16 @@ class _ClientProfileScreenState extends State<ClientProfileScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Profil', style: TextStyle(fontWeight: FontWeight.bold)),
-        ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () async {
+                await AuthService().signOut();
+                if (!mounted) return;
+                Navigator.pushReplacementNamed(context, '/login');
+              },
+            ),
+          ],),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
