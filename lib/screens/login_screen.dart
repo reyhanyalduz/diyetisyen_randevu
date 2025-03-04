@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
               content:
-              Text("Giriş başarısız, lütfen bilgilerinizi kontrol edin.")),
+              Text("Giriş başarısız, lütfen bilgilerinizi kontrol edin."),),
         );
       }
     }
@@ -137,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                                   child: Text("Giriş Yap"),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,
-                                    foregroundColor: Colors.blue,
+                                    foregroundColor: AppColors.color2,
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 40, vertical: 12),
                                     textStyle: TextStyle(fontSize: 16),

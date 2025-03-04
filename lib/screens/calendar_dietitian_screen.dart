@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import '../utils/constants.dart';
 import '../widgets/appointment_table_widget.dart';
 import '../widgets/date_selector_widget.dart';
 
@@ -42,6 +40,5 @@ class _DietitianAppointmentPageState extends State<DietitianAppointmentPage> {
     );
   }
 
-  // Üstteki tarih seçim bileşeni
 
 }

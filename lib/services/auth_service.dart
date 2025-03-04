@@ -12,16 +12,22 @@ class AuthService {
       String name, int height, double weight) async {
     try {
       UserCredential userCredential =
-      await _auth.createUserWithEmailAndPassword(
+          await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
       String uid = userCredential.user!.uid;
-      AppUser newUser;
+      Map<String, dynamic> userBasicData = {
+        'uid': uid,
+        'email': email,
+        'name': name,
+        'userType': userType == UserType.client ? 'client' : 'dietitian',
+      };
+      print("Firestore'a kaydedilecek veri: $userBasicData");
 
       if (userType == UserType.client) {
-        newUser = Client(
+        Client newUser = Client(
           uid: uid,
           name: name,
           email: email,
@@ -32,13 +38,17 @@ class AuthService {
         );
         await _firestore.collection('clients').doc(uid).set(newUser.toMap());
       } else {
-        newUser = Dietitian(uid: uid, name: name, email: email, specialty: '');
+        Dietitian newUser = Dietitian(uid: uid, name: name, email: email, specialty: '');
         await _firestore.collection('dietitians').doc(uid).set(newUser.toMap());
       }
 
-      await _firestore.collection('users').doc(uid).set(newUser.toMap());
+      await _firestore.collection('users').doc(uid).set(userBasicData);
+      if (userCredential.user == null) {
+        print("Kullanıcı oluşturulamadı, userCredential.user null döndü!");
+        return null;
+      }
 
-      return newUser;
+      return AppUser.fromMap(userBasicData);
     } catch (e) {
       print("Kayıt hatası: $e");
       return null;
@@ -54,18 +64,28 @@ class AuthService {
       );
 
       String uid = userCredential.user!.uid;
-      // Önce client koleksiyonunda ara
-      DocumentSnapshot clientDoc =
-      await _firestore.collection('clients').doc(uid).get();
-      if (clientDoc.exists) {
-        return AppUser.fromMap(clientDoc.data() as Map<String, dynamic>);
-      }
 
-      // Client değilse dietitian koleksiyonunda ara
-      DocumentSnapshot dietitianDoc =
-      await _firestore.collection('dietitians').doc(uid).get();
-      if (dietitianDoc.exists) {
-        return AppUser.fromMap(dietitianDoc.data() as Map<String, dynamic>);
+      DocumentSnapshot userDoc =
+      await _firestore.collection('users').doc(uid).get();
+      if (!userDoc.exists) return null;
+
+      Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+      UserType userType = userData['userType'].toString().contains('dietitian')
+          ? UserType.dietitian
+          : UserType.client;
+
+      if (userType == UserType.client) {
+        DocumentSnapshot clientDoc =
+        await _firestore.collection('clients').doc(uid).get();
+        if (clientDoc.exists) {
+          return AppUser.fromMap(clientDoc.data() as Map<String, dynamic>);
+        }
+      } else {
+        DocumentSnapshot dietitianDoc =
+        await _firestore.collection('dietitians').doc(uid).get();
+        if (dietitianDoc.exists) {
+          return AppUser.fromMap(dietitianDoc.data() as Map<String, dynamic>);
+        }
       }
 
       return null;
@@ -85,7 +105,7 @@ class AuthService {
     User? firebaseUser = _auth.currentUser;
     if (firebaseUser != null) {
       DocumentSnapshot userDoc =
-      await _firestore.collection('users').doc(firebaseUser.uid).get();
+          await _firestore.collection('users').doc(firebaseUser.uid).get();
       if (userDoc.exists) {
         return AppUser.fromMap(userDoc.data() as Map<String, dynamic>);
       }
